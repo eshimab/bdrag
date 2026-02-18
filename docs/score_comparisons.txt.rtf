@@ -1,0 +1,123 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2867
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\margl1440\margr1440\vieww19960\viewh21740\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 \
+eshim@eshimbp22 rag-search-engine % uv run cli_guide/keyword_search_cli.py bm25search "police"\
+\
+1. (1373) Dial 1119 - Score: 2.6340\
+2. (2051) La balance - Score: 2.6260\
+3. (4126) New Jersey Drive - Score: 2.6200\
+4. (2947) Vinashak - Destroyer - Score: 2.6120\
+5. (3037) The Hitcher - Score: 2.5990\
+\
+eshim@eshimbp22 rag-search-engine % uv run cli/keyword_search_cli.py bm25search "police"\
+\
+1. (1373) Dial 1119 - Score: 2.6340\
+2. (2051) La balance - Score: 2.6262\
+3. (4126) New Jersey Drive - Score: 2.6204\
+4. (2947) Vinashak - Destroyer - Score: 2.6124\
+5. (3037) The Hitcher - Score: 2.5991\
+\
+\
+eshim@eshimbp22 rag-search-engine % uv run cli/semantic_search_cli.py search_chunked "honest daring officer"\
+\
+1. Baskin (score: 0.5079)\
+    The film opens with a boy waking from sleep in the middle of\
+\
+2. Police Academy 4: Citizens on Patrol (score: 0.5072)\
+    Commandant Eric Lassard (George Gaynes) decides that the pol\
+\
+3. Police Academy 3: Back in Training (score: 0.4916)\
+    The film begins in a large garage structure, where Lt. Proct\
+\
+4. Police Academy 5: Assignment: Miami Beach (score: 0.4911)\
+    Captain Harris finally finds the goods he needs to push Comm\
+\
+5. Let Us Prey (score: 0.4868)\
+    Eerie images of a raven flying by.Title credits.A man whistl\
+\
+\
+\
+eshim@eshimbp22 rag-search-engine % uv run cli_guide/semantic_search_cli.py search_chunked "honest daring officer"\
+\
+1. Baskin (score: 0.5080)\
+   The film opens with a boy waking from sleep in the middle of the night. He walks to a closed door ac...\
+\
+2. Police Academy 4: Citizens on Patrol (score: 0.5070)\
+   Commandant Eric Lassard (George Gaynes) decides that the police force is overworked and understaffed...\
+\
+3. Police Academy 3: Back in Training (score: 0.4920)\
+   The film begins in a large garage structure, where Lt. Proctor (Lance Kinsey) and Commandant Mauser ...\
+\
+4. Police Academy 5: Assignment: Miami Beach (score: 0.4910)\
+   Captain Harris finally finds the goods he needs to push Commandant Eric Lassard out at the Police Ac...\
+\
+5. Let Us Prey (score: 0.4870)\
+   Eerie images of a raven flying by.Title credits.A man whistling. PC. Rachel Heggie (Pollyanna McInto...\
+\
+\
+\
+eshim@eshimbp22 rag-search-engine % uv run cli_guide/hybrid_search_cli.py weighted-search "action movies about cops" --alpha 0.5\
+\
+1. Three the Hard Way\
+   Hybrid Score: 1.0000\
+   BM25: 1.0000, Semantic: 1.0000\
+   Three The Hard Way was released in 1974 and is considered one of the classic action movies of the bl...\
+\
+2. Johnny Gaddaar\
+   Hybrid Score: 0.7860\
+   BM25: 0.6751, Semantic: 0.8960\
+   The film starts out on a rainy night with a conversation between four cops in a police van, patrolli...\
+\
+3. Let's Be Cops\
+   Hybrid Score: 0.7730\
+   BM25: 0.7261, Semantic: 0.8208\
+   The film opens with Ryan (Jake Jonshon) singing karaoke to Justin (Damon Wayons, Jr) in a pizza plac...\
+\
+4. Faster\
+   Hybrid Score: 0.7340\
+   BM25: 0.7174, Semantic: 0.7514\
+   The film begins with Driver (Dwayne Johnson) being released from prison after talking to the warden ...\
+\
+5. Last Action Hero\
+   Hybrid Score: 0.7070\
+   BM25: 0.7512, Semantic: 0.6618\
+   The movie opens at night as a police car screeches to a halt in the middle of a deserted street. It ...\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 eshim@eshimbp22 rag-search-engine % uv run cli/hybrid_search_cli.py weighted-search "action movies about cops" --alpha 0.5\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+\cf0 1. Three the Hard Way\
+Hybrid Score: 1.0000\
+BM25: 1.0000, Semantic: 1.0000\
+Three The Hard Way was released in 1974 and is considered one of the classic action movies of the bl\
+\
+2. Johnny Gaddaar\
+Hybrid Score: 0.7853\
+BM25: 0.6751, Semantic: 0.8954\
+The film starts out on a rainy night with a conversation between four cops in a police van, patrolli\
+\
+3. Let's Be Cops\
+Hybrid Score: 0.7737\
+BM25: 0.7260, Semantic: 0.8214\
+The film opens with Ryan (Jake Jonshon) singing karaoke to Justin (Damon Wayons, Jr) in a pizza plac\
+\
+4. Faster\
+Hybrid Score: 0.7348\
+BM25: 0.7175, Semantic: 0.7522\
+The film begins with Driver (Dwayne Johnson) being released from prison after talking to the warden\
+\
+5. Last Action Hero\
+Hybrid Score: 0.7062\
+BM25: 0.7512, Semantic: 0.6612\
+The movie opens at night as a police car screeches to a halt in the middle of a deserted street. It\
+\
+\
+\
+}

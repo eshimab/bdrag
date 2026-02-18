@@ -52,9 +52,10 @@ class HybridSearch:
                 bm_dict_list = [bmsc for bmsc in bms if bmsc["id"] == doc_id]
                 if len(bm_dict_list) > 1:
                     print(f"weighted_search > bm_score_list len = {len(bm_dict_list)}")
+                    raise ValueError(f"weighted_search > bm_score_list too long")
                 bm_dict = bm_dict_list[0]
-                bm_score = (bm_dict["score"] - bm_min) / bm_dist
                 bm_score_raw = bm_dict["score"]
+                bm_score = (bm_score_raw - bm_min) / bm_dist
             # get cs_score
             if not doc_id in cs_ids:
                 cs_score = 0.0
@@ -64,8 +65,10 @@ class HybridSearch:
                 cs_dict_list = [cssc for cssc in css if cssc["id"] == doc_id]
                 if len(cs_dict_list) > 1:
                     print(f"weighted_search > cs_dict_list len = {len(cs_dict_list)}")
+                    raise ValueError(f"weighted_search > cs_score_list too long")
                 cs_dict = cs_dict_list[0]
-                cs_score = (cs_dict["score"] - cs_min) / cs_dist
+                cs_score_raw = cs_dict["score"]
+                cs_score = (cs_score_raw - cs_min) / cs_dist
             # get hybrid_score
             hs_score = hybrid_score(bm_score, cs_score, alpha)
             # get doc_id metadata
@@ -81,7 +84,7 @@ class HybridSearch:
             hybrid_dict["description"] = description
             hybrid_dict["semantic_score"] = cs_score
             hybrid_dict["bm25_score"] = bm_score
-            hybrid_dict["hybrid_score"] = hs_score
+            hybrid_dict["hybrid_score"] = round(hs_score, 3)
             hybrid_dict["cs_raw"] = cs_score_raw
             hybrid_dict["bm_raw"] = bm_score_raw
             hybrid_list.append(hybrid_dict)

@@ -158,8 +158,9 @@ class ChunkedSemanticSearch(SemanticSearch):
                 if one_line:
                     maxidx = len(text_all)
                 text_raw = text_all[minidx:maxidx]
+                text_stripped = [text.strip() for text in text_raw]
                 # save to meta lists
-                chunk_text = " ".join(text_raw).strip()
+                chunk_text = " ".join(text_stripped)
                 # strip before append to list
                 chunk_text = chunk_text.strip()
                 # skip if nothing after stripping
@@ -210,7 +211,7 @@ class ChunkedSemanticSearch(SemanticSearch):
             chunk_meta = self.chunk_metadata[cidx]
             cs_dict = dict()
             movie_idx = chunk_meta["movie_idx"]
-            cossim = cosine_similarity(chunk_emb, embq)
+            cossim = round(cosine_similarity(chunk_emb, embq), 3)
             cs_dict["chunk_idx"] = chunk_meta["chunk_idx"]
             cs_dict["movie_idx"] = chunk_meta["movie_idx"]
             cs_dict["id"] = chunk_meta["id"]

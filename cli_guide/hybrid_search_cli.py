@@ -46,7 +46,7 @@ def main() -> None:
             )
             for i, res in enumerate(result["results"], 1):
                 print(f"{i}. {res['title']}")
-                print(f"   Hybrid Score: {res.get('score', 0):.4f}")
+                print(f"   Hybrid Score: {res.get('score', 0):.3f}")
                 metadata = res.get("metadata", {})
                 if "bm25_score" in metadata and "semantic_score" in metadata:
                     print(

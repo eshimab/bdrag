@@ -19,8 +19,7 @@ class InvertedIndex:
         self.doc_lengths = dict()
         # get stop words, create stop word set, read file once for perf
         with open("data/stopwords.txt") as sfile:
-            # using the {} syntax to create a unique set
-            self.stop_words = {line.strip() for line in sfile}
+            self.stop_words = sfile.read().splitlines()
 
     def tokenize(self, text_input) -> list:
         text = text_input.lower()
@@ -122,7 +121,7 @@ class InvertedIndex:
             scd["id"] = doc["id"]
             scd["title"] = doc["title"]
             scd["description"] = doc["description"]
-            scd["score"] = score
+            scd["score"] = round(score, 3)
             scores_limit.append(scd)
         return scores_limit
         # scores_sorted = {

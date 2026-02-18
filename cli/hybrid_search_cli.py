@@ -29,7 +29,7 @@ def main() -> None:
             hidx = 1
             for hs in hs_list:
                 print(f"{hidx}. {hs["title"]}")
-                print(f"Hybrid Score: {hs["hybrid_score"]:.5f}")
+                print(f"Hybrid Score: {hs["hybrid_score"]:.3f}")
                 print(
                     f"BM25: {hs["bm25_score"]:.4f}, Semantic: {hs["semantic_score"]:.4f}"
                 )

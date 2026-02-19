@@ -95,5 +95,33 @@ The `list()` **constructor** (`method`) iterates over the input **`iterable`**. 
 - **`Constructor`**: A special method used to create an instance of a class.
 - **`Iterable`**: An object capable of returning its members one at a time (like a string returning characters).
 
+## 2026-02-18 EAFP and LBYL programming styles
+
+### **171] EAFP and LBYL programming styles**
+----------------------------------------
+
+These acronyms represent two common coding **`paradigms`** (`styles`) for handling errors and edge cases.
+
+#### 1. EAFP (Easier to Ask for Forgiveness than Permission)
+This style assumes things will usually work and uses **`exceptions`** (`logic`) to catch failures if they don't.
+- **Pythonic way**: Using `try...except`.
+- **In your code**: `try: doc_id = int(doc_id)` follows EAFP. You "ask" Python to convert it, and if it fails, you handle the "forgiveness" in the `except` block.
+
+#### 2. LBYL (Look Before You Leap)
+This style explicitly checks for **`preconditions`** (`logic`) before performing an operation.
+- **Traditional way**: Using `if` statements.
+- **In your code**: `if doc_id not in rr_map:` follows LBYL. You "look" to see if the ID exists before you "leap" into accessing the dictionary.
+
+#### Technical Comparison
+
+| Feature         | EAFP                      | LBYL                         |
+| :-------------- | :------------------------ | :--------------------------- |
+| **Mechanism**   | `try...except`            | `if...else`                  |
+| **Performance** | Faster if errors are rare | Faster if errors are frequent |
+| **Readability** | High (focuses on main path)| Variable (can lead to nesting)|
+
+Python generally prefers **EAFP** because it is cleaner and more robust against **`race conditions`** (`concept`), though combining them as you did is often the most practical solution.
+
+
 
 

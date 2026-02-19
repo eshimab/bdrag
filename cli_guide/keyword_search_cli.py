@@ -100,7 +100,7 @@ def main() -> None:
             print("Searching for:", args.query)
             results = bm25search_command(args.query)
             for i, res in enumerate(results, 1):
-                print(f"{i}. ({res['id']}) {res['title']} - Score: {res['score']:.4f}")
+                print(f"{i}. ({res['id']}) {res['title']} - Score: {res['score']:.2f}")
         case _:
             parser.print_help()
 

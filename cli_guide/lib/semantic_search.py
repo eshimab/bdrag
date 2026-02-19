@@ -188,6 +188,7 @@ def semantic_chunk(
     overlap: int = DEFAULT_CHUNK_OVERLAP,
 ) -> list[str]:
     text = text.strip()
+
     if not text:
         return []
 

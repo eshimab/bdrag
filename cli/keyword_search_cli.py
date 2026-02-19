@@ -106,7 +106,7 @@ def main() -> None:
                 didx += 1
                 title = bm_dict["title"]
                 fstr = (
-                    f"{didx}. ({bm_dict["id"]}) {title} - Score: {bm_dict["score"]:.4f}"
+                    f"{didx}. ({bm_dict["id"]}) {title} - Score: {bm_dict["score"]:.3f}"
                 )
                 print(fstr)
                 if didx == 5:

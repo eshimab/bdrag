@@ -123,14 +123,13 @@ class InvertedIndex:
             scd["description"] = doc["description"]
             scd["score"] = round(score, 3)
             scores_limit.append(scd)
-        return scores_limit
-        # scores_sorted = {
-        #    doc_id: bms
-        #    for doc_id, bms in sorted(
-        #        scores_dict.items(), key=lambda item: item[1], reverse=True
-        #    )
-        # }
-        # scores_limit = dict(islice(scores_sorted.items(), limit))
+        # sort scores
+        scores_sorted = sorted(
+            scores_limit,
+            key=lambda score_dict: score_dict["score"],
+            reverse=True,
+        )
+        return scores_sorted
 
     def get_bm25_idf(self, term_input: str) -> float:
         doc_count = len(self.docmap)

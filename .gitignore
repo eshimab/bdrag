@@ -5,13 +5,15 @@ build/
 dist/
 wheels/
 *.egg-info
+uv.lock
 
 # Virtual environments
 .venv
 
-# json data dir
+# data 
 /data/
 cache/
-uv.lock
+*.env
 
+# specific
 .DS_Store

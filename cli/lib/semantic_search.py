@@ -208,10 +208,10 @@ class ChunkedSemanticSearch(SemanticSearch):
         print(f"chunk_embeddings = {len(self.chunk_embeddings)}")
         for chunk_emb in self.chunk_embeddings:
             # print(f"cidx = {cidx}")
-            chunk_meta = self.chunk_metadata[cidx]
-            cs_dict = dict()
-            movie_idx = chunk_meta["movie_idx"]
             cossim = round(cosine_similarity(chunk_emb, embq), 3)
+            chunk_meta = self.chunk_metadata[cidx]
+            movie_idx = chunk_meta["movie_idx"]
+            cs_dict = dict()
             cs_dict["chunk_idx"] = chunk_meta["chunk_idx"]
             cs_dict["movie_idx"] = chunk_meta["movie_idx"]
             cs_dict["id"] = chunk_meta["id"]
@@ -229,13 +229,13 @@ class ChunkedSemanticSearch(SemanticSearch):
             fin_dict = dict()
             doc_id = cs_dict["id"]
             if doc_id in doc_id_uni:
-                print(f"Duplicate entry for doc_id: {doc_id}, skipping")
+                # print(f"Duplicate entry for doc_id: {doc_id}, skipping")
                 continue
             doc_id_uni.add(doc_id)
             doc = self.document_map[doc_id]
             fin_dict["id"] = doc_id
             fin_dict["title"] = doc["title"]
-            fin_dict["description"] = doc["description"][:100]
+            fin_dict["description"] = doc["description"]
             fin_dict["score"] = cs_dict["score"]
             fin_dict["metadata"] = {}
             final_list.append(fin_dict)

@@ -13,9 +13,12 @@ My Output
 Guide Output
 - Query: car racing
   - Precision@10: 0.4000
+  - Recall@10: 0.5714
   - Retrieved: Cannonball!, Cars, Fast and Furious, Hot Wheels Highway 35 World Race, Michel Vaillant, Need for Speed, Redline, Rush, The Fast and the Furious, Thunder Alley
   - Relevant: Cars, Furious Seven, Need for Speed, Rush, Talladega Nights: The Ballad of Ricky Bobby, The Fast and the Furious, The Love Bug
   - Matched: Cars, Need for Speed, Rush, The Fast and the Furious
+
+
 
 eshim@eshimbp22 rag-search-engine % uv run cli_guide/evaluation_cli.py --limit 10
 Loading weights: 100%|████████████████████| 41/41 [00:00<00:00, 5808.30it/s, Materializing param=classifier.weight]

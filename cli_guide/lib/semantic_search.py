@@ -331,7 +331,6 @@ class ChunkedSemanticSearch(SemanticSearch):
                     doc_id=doc["id"],
                     title=doc["title"],
                     document=doc["description"],
-                    # document=doc["description"][:DOCUMENT_PREVIEW_LENGTH],
                     score=score,
                 )
             )

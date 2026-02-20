@@ -39,6 +39,7 @@ def main():
         gd["matched"] = set(rdocs) & set(rr_titles)
         gd["kpres"] = len(gd["matched"]) / len(rr_titles)
         gd["recall"] = len(gd["matched"]) / len(rdocs)
+        gd["fone"] = 2 * (gd["kpres"] * gd["recall"]) / (gd["kpres"] + gd["recall"])
         # other stats
         gd["ret"] = sorted(set(rr_titles))
         gd["relevant"] = sorted(set(rdocs))
@@ -51,13 +52,12 @@ def main():
         gd["rrmap"] = rrmap
     # print
     for gd in gdata:
-        query_list = ["cute british bear marmalade", "car racing", "dinosaur park"]
+        # query_list = ["cute british bear marmalade", "car racing", "dinosaur park"]
         # query_list = ["car racing"]
-        if gd["query"] not in query_list:
-            continue
         print(f"\n- Query: {gd["query"]}")
         print(f"  - Precision@{top_k}: {gd["kpres"]:.4f}")
         print(f"  - Recall@{top_k}: {gd["recall"]:.4f}")
+        print(f"  - F1 Score: {gd["fone"]:.4f}")
         print(f"  - Relevant:  {", ".join(gd["relevant"])}")
         print(f"  - Retrieved: {", ".join(gd["ret"])}")
         print(f"  - Matched: ({gd["pct_kpres"]:.1f}%) {", ".join(gd["matched"])}")

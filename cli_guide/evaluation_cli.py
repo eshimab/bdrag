@@ -17,10 +17,13 @@ def main() -> None:
 
     print(f"k={args.limit}\n")
     for query, res in result["results"].items():
-        query_list = ["cute british bear marmalade", "car racing", "dinosaur park"]
+        # query_list = ["cute british bear marmalade", "car racing", "dinosaur park"]
         # query_list = ["car racing"]
-        if query not in query_list:
-            continue
+        # if query not in query_list:
+        #    continue
+        fone = (
+            2 * (res["precision"] * res["recall"]) / (res["precision"] + res["recall"])
+        )
         print(f"- Query: {query}")
         print(f"  - Precision@{args.limit}: {res['precision']:.4f}")
         print(f"  - Recall@{args.limit}: {res['recall']:.4f}")

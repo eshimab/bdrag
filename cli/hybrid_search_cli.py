@@ -80,8 +80,17 @@ def main() -> None:
                 total_limit = args.limit * 5
             else:
                 total_limit = args.limit
+            # get rrf scores
             rrfs = hss.rrf_search(query, args.k, total_limit)
             rr_map = {inner_dict["id"]: inner_dict for inner_dict in rrfs}
+            for doc_id in rr_map:
+                rr_map[doc_id]["init_query"] = init_query
+                rr_map[doc_id]["query"] = query
+                if args.enhance:
+                    rr_map[doc_id]["enh_kind"] = args.enhance
+                    rr_map[doc_id]["enh_query"] = model_query
+                if args.rerank_method:
+                    rr_map[doc_id]["rerank"] = args.rerank_method
             # model reranks
             if not args.rerank_method:
                 rrfs_final = rrfs
@@ -90,6 +99,7 @@ def main() -> None:
                     doc_id = rr["id"]
                     doc = hss.semantic_search.document_map[doc_id]
                     model_query = mq.model_rerank_indv(query, doc)
+                    rr["rerank_query"] = model_query
                     mresp = client.models.generate_content(
                         model="gemini-2.5-flash", contents=model_query
                     )
@@ -126,6 +136,7 @@ def main() -> None:
                     rr = rr_map[doc_id]
                     print(f"model_rank: {ridx} for {rr["title"]}")
                     rr["model_rank"] = ridx
+                    rr["rerank_query"] = model_query
                     rrfs_final.append(rr)
                     ridx += 1
             elif args.rerank_method and args.rerank_method == "cross_encoder":
@@ -148,18 +159,32 @@ def main() -> None:
                 rrfs_final = sorted(
                     rrfs, key=lambda inner_dict: inner_dict["cross_score"], reverse=True
                 )
+            # print query meta
+            print(f"\n========= Query Metadata ===============")
+            print(f"   Original Query: {rrfs_final[0]["init_query"]}")
+            if args.enhance:
+                print(f"   Enhance Method: {rrfs_final[0]["enh_kind"]}")
+                print(f"   Enhanced Query: {rrfs_final[0]["enh_query"]}")
+            if args.rerank_method:
+                print(f"   Rerank-method: {rrfs_final[0]["rerank"]}")
             # printing
-            for ridx, rr in enumerate(rrfs_final):
-                if ridx == args.limit:
-                    break
-                print(f"\n{ridx+1}. {rr["title"]}")
+            for ridx, rr in enumerate(rrfs_final, start=1):
+                print(f"\n{ridx}. {rr["title"]}")
                 if rr.get("model_rank"):
                     print(f"   Model Rank: {rr["model_rank"]}/{len(rrfs_final)}")
                     print(f"   Rerank Method: {args.rerank_method}")
                 if rr.get("cross_score"):
                     print(f"   Cross Encoder Score: {rr["cross_score"]:.4f}")
-                print(f"   RRF Score: {rr["score"]:.4f} | k = {args.k}")
+                print(f"   RRF Score: {rr["rr_score"]:.4f} | k = {args.k}")
+                print(f"   RRF Rank: {rr["rr_rank"]}")
                 print(f"   BM25 Rank: {rr["bm_rank"]}, Semantic Rank: {rr["cs_rank"]}")
+                print(
+                    f"   BM25 Raw:  {rr["bm_raw"]:.4f}, Semantic Raw:  {rr["cs_raw"]:.4f}"
+                )
+                if rr.get("rerank_query"):
+                    print(f"    Re-Rank Query: {rr["rerank_query"]}")
+                if "The Land Before Time XI" in rr["title"]:
+                    break
                 # print(f"   {desc_string(rr)}")
 
         case "weighted-search":

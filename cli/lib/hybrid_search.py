@@ -58,40 +58,44 @@ class HybridSearch:
             bm_score = 1 / (k_val + rank)
             rrf_scores[doc_id] = {
                 "id": doc_id,
-                "score": bm_score,
+                "rr_score": bm_score,
                 "bm_rank": rank,
                 "bm_score": bm_score,
                 "cs_rank": None,
                 "cs_score": 0,
+                "bm_raw": result["score"],
             }
         # Loop 2: Semantic
         for rank, result in enumerate(css, start=1):
             doc_id = result["id"]
             cs_score = 1 / (k_val + rank)
             if doc_id in rrf_scores:
-                rrf_scores[doc_id]["score"] += cs_score
+                rrf_scores[doc_id]["rr_score"] += cs_score
             else:
                 rrf_scores[doc_id] = {
                     "id": doc_id,
-                    "score": cs_score,
+                    "rr_score": cs_score,
                     "bm_rank": None,
                     "bm_score": 0,
+                    "bm_raw": 0,
                 }
             rrf_scores[doc_id]["cs_rank"] = rank
             rrf_scores[doc_id]["cs_score"] = cs_score
+            rrf_scores[doc_id]["cs_raw"] = result["score"]
+        # sort and limit
+        rr_sorted = sorted(
+            rrf_scores.values(), key=lambda rrf: rrf["rr_score"], reverse=True
+        )
         # get metadata and compute rrf score
-        for doc_id in rrf_scores:
+        for ridx, doc_id in enumerate(rrf_scores, start=1):
+            rrf_scores[doc_id]["rr_rank"] = ridx
             rrf_scores[doc_id]["title"] = self.semantic_search.document_map[doc_id][
                 "title"
             ]
             rrf_scores[doc_id]["description"] = self.semantic_search.document_map[
                 doc_id
             ]["description"]
-            rrf_scores[doc_id]["score"] = round(rrf_scores[doc_id]["score"], 3)
-        # sort and limit
-        rr_sorted = sorted(
-            rrf_scores.values(), key=lambda rrf: rrf["score"], reverse=True
-        )
+            # rrf_scores[doc_id]["rr_score"] = round(rrf_scores[doc_id]["rr_score"], 3)
         return rr_sorted[0:limit]
 
     def weighted_search(self, query, alpha, limit=5):

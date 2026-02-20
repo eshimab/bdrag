@@ -136,9 +136,7 @@ class ChunkedSemanticSearch(SemanticSearch):
             text_all = re.split(r"(?<=[.!?])\s+", doc_desc)
             one_line = False
             # if one sentence AND no puncutation, process text_all as one sentence
-            if len(text_all) == 1 and not any(
-                char in string.punctuation for char in doc_desc[-1]
-            ):
+            if len(text_all) == 1 and not text_all.endswith((".", "!", "?")):
                 one_line = True
             # Init loop
             chunk_size = 4
@@ -241,9 +239,7 @@ class ChunkedSemanticSearch(SemanticSearch):
             fin_dict["score"] = cs_dict["score"]
             fin_dict["metadata"] = {}
             final_list.append(fin_dict)
-            if len(final_list) == limit:
-                break
-        return final_list
+        return final_list[:limit]
 
     def load_or_create_chunk_embeddings(self, documents: list[dict]) -> np.ndarray:
         self.documents = documents

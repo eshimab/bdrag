@@ -32,6 +32,7 @@ def main():
         query = gd["query"]
         rdocs = gd["relevant_docs"]
         rrfs = hss.rrf_search(query, k_val, top_k)
+        rrmap = {rr["id"] for rr in rrfs}
         # rr_map = {inner_dict["id"]: inner_dict for inner_dict in rrfs}
         rr_titles = [rr["title"] for rr in rrfs]
         # main stats
@@ -47,6 +48,7 @@ def main():
         gd["pct_not_rel"] = len(gd["not_rel"]) / len(rr_titles) * 100
         gd["pct_kpres"] = gd["kpres"] * 100
         gd["matched"] = sorted(gd["matched"])
+        gd["rrmap"] = rrmap
     # print
     for gd in gdata:
         query_list = ["cute british bear marmalade", "car racing", "dinosaur park"]

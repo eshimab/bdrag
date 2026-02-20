@@ -107,29 +107,29 @@ class InvertedIndex:
 
     def bm25_search(self, query, limit=5) -> dict:
         query_tokens = set(self.tokenize(query))
-        scores_dict = dict()
-        for doc_id in self.docmap:
-            bms_total = 0
-            for term in query_tokens:
-                bms_total += self.get_bms(doc_id, term)
-            scores_dict[doc_id] = bms_total
-        scores_sorted = sorted(scores_dict.items(), key=lambda x: x[1], reverse=True)
-        scores_limit = list()
-        for doc_id, score in scores_sorted[:limit]:
-            doc = self.docmap[doc_id]
-            scd = dict()
-            scd["id"] = doc["id"]
-            scd["title"] = doc["title"]
-            scd["description"] = doc["description"]
-            scd["score"] = round(score, 3)
-            scores_limit.append(scd)
-        # sort scores
-        scores_sorted = sorted(
-            scores_limit,
-            key=lambda score_dict: score_dict["score"],
-            reverse=True,
-        )
-        return scores_sorted
+        scores = dict()
+        for token in query_tokens:
+            if token in self.index:
+                doc_ids = self.index[token]
+                idf = self.get_bm25_idf(token)
+                for doc_id in doc_ids:
+                    tf_component = self.get_bm25_tf(doc_id, token)
+                    score = idf * tf_component
+                    scores[doc_id] = scores.get(doc_id, 0.0) + score
+        sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
+        results = []
+        for doc_id, score in sorted_scores:
+            if score > 0:
+                doc = self.docmap[doc_id]
+                results.append(
+                    {
+                        "id": doc_id,
+                        "title": doc["title"],
+                        "description": doc["description"],
+                        "score": score,
+                    }
+                )
+        return results[:limit]
 
     def get_bm25_idf(self, term_input: str) -> float:
         doc_count = len(self.docmap)

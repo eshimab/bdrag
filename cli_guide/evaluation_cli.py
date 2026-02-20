@@ -23,6 +23,7 @@ def main() -> None:
             continue
         print(f"- Query: {query}")
         print(f"  - Precision@{args.limit}: {res['precision']:.4f}")
+        print(f"  - Recall@{args.limit}: {res['recall']:.4f}")
         print(f"  - Retrieved: {', '.join(sorted(res['retrieved']))}")
         print(f"  - Relevant: {', '.join(sorted(res['relevant']))}")
         print(f"  - Matched: {', '.join(sorted(res['matched']))}")

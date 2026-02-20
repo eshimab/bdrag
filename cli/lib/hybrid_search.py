@@ -63,9 +63,9 @@ class HybridSearch:
         bm_ids = [bm_dict["id"] for bm_dict in bms]
         cs_ids = [cs_dict["id"] for cs_dict in css]
         id_set = set(bm_ids) | set(cs_ids)  # create union of sets
-        print(f"bm_ids = {len(bm_ids)}, bm_id_set = {len(set(bm_ids))}")
-        print(f"cs_ids = {len(cs_ids)}, cs_id_set = {len(set(cs_ids))}")
-        print(f"id_set = {len(id_set)}")
+        # print(f"rrf_search > bm_ids = {len(bm_ids)}, bm_id_set = {len(set(bm_ids))}")
+        # print(f"rrf_search > cs_ids = {len(cs_ids)}, cs_id_set = {len(set(cs_ids))}")
+        # print(f"rrf_search > id_set = {len(id_set)}")
         # init loop
         rr_list = list()
         for doc_id in id_set:
@@ -91,7 +91,8 @@ class HybridSearch:
                 rr_dict["score"] += rr_dict["cs_score"]
             # add metadata
             # rr_dict["score"] = round(rr_dict["score"], 4)
-            rr_dict["score"] = rr_dict["score"]
+            rr_dict["score"] = round(rr_dict["score"], 3)
+            # rr_dict["score"] = rr_dict["score"]
             rr_list.append(rr_dict)
         # sort
         rr_sorted = sorted(rr_list, key=lambda rrd: rrd["score"], reverse=True)
@@ -109,9 +110,9 @@ class HybridSearch:
         cs_ids = [cs_dict["id"] for cs_dict in css]
         cs_id_set = set(cs_ids)
         id_set = set(bm_ids) | set(cs_ids)  # create union of sets
-        print(f"bm_ids = {len(bm_ids)}, bm_id_set = {len(bm_id_set)}")
-        print(f"cs_ids = {len(cs_ids)}, cs_id_set = {len(cs_id_set)}")
-        print(f"id_set = {len(id_set)}")
+        print(f"weighted_search > bm_ids = {len(bm_ids)}, bm_id_set = {len(bm_id_set)}")
+        print(f"weighted_search > cs_ids = {len(cs_ids)}, cs_id_set = {len(cs_id_set)}")
+        print(f"weighted_search > id_set = {len(id_set)}")
         bm_min = min(bm_scores)
         bm_dist = max(bm_scores) - bm_min
         cs_min = min(cs_scores)

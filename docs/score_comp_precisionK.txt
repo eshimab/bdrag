@@ -1,0 +1,240 @@
+
+My Output
+- Query: car racing
+  - Precision@10: 0.5000
+  - Recall@10: 0.7143
+  - Relevant:  Cars, Furious Seven, Need for Speed, Rush, Talladega Nights: The Ballad of Ricky Bobby, The Fast and the Furious, The Love Bug
+  - Retrieved: Cannonball!, Cars, Fast and Furious, Hot Wheels Highway 35 World Race, Michel Vaillant, Need for Speed, Redline, Rush, Talladega Nights: The Ballad of Ricky Bobby, The Fast and the Furious
+  - Matched: (50.0%) Cars, Need for Speed, Rush, Talladega Nights: The Ballad of Ricky Bobby, The Fast and the Furious
+
+  - Missed: (28.6%) The Love Bug, Furious Seven
+  - Not Relevant: (50.0%) Michel Vaillant, Redline, Fast and Furious, Hot Wheels Highway 35 World Race, Cannonball!
+
+Guide Output
+- Query: car racing
+  - Precision@10: 0.4000
+  - Retrieved: Cannonball!, Cars, Fast and Furious, Hot Wheels Highway 35 World Race, Michel Vaillant, Need for Speed, Redline, Rush, The Fast and the Furious, Thunder Alley
+  - Relevant: Cars, Furious Seven, Need for Speed, Rush, Talladega Nights: The Ballad of Ricky Bobby, The Fast and the Furious, The Love Bug
+  - Matched: Cars, Need for Speed, Rush, The Fast and the Furious
+
+eshim@eshimbp22 rag-search-engine % uv run cli_guide/evaluation_cli.py --limit 10
+Loading weights: 100%|████████████████████| 41/41 [00:00<00:00, 5808.30it/s, Materializing param=classifier.weight]
+BertForSequenceClassification LOAD REPORT from: cross-encoder/ms-marco-TinyBERT-L2-v2
+Key                          | Status     |  |
+-----------------------------+------------+--+-
+bert.embeddings.position_ids | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED    :can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+
+guide: evaluation.evaluate_command > loading semantic search
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|████████████████| 103/103 [00:00<00:00, 5743.02it/s, Materializing param=pooler.dense.weight]
+BertModel LOAD REPORT from: sentence-transformers/all-MiniLM-L6-v2
+Key                     | Status     |  |
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED    :can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+
+guide: evaluation.evaluate_command > load or create embeddings
+
+guide: evaluation.evaluate_command > create hybrid search
+Loading weights: 100%|████████████████| 103/103 [00:00<00:00, 4566.16it/s, Materializing param=pooler.dense.weight]
+BertModel LOAD REPORT from: sentence-transformers/all-MiniLM-L6-v2
+Key                     | Status     |  |
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED    :can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+
+guide: evaluation.evaluate_command > begin looping test cases
+
+- Query: cute british bear marmalade
+  - Precision@3: 0.3333
+  - Recall@3: ???
+  - Retrieved: Paddington, The Duchess, The Bear
+  - Relevant: Paddington
+
+- Query: cute british bear marmalade
+  - Precision@5: 0.2000
+  - Recall@5: 1.0000
+  - Retrieved: Paddington, The Duchess, The Bear, The Great Bear, Care Bears Movie II: A New Generation
+  - Relevant: Paddington
+
+- Query: cute british bear marmalade
+  - Precision@6: 0.1667
+  - Recall@6: ???
+  - Retrieved: Paddington, The Duchess, The Bear, The Great Bear, Care Bears Movie II: A New Generation, Care Bears Nutcracker Suite
+  - Relevant: Paddington
+
+- Query: cute british bear marmalade
+  - Precision@10: 0.1000
+  - Recall@10: ???
+  - Retrieved: Paddington, The Duchess, The Bear, The Great Bear, Care Bears Movie II: A New Generation, Care Bears Nutcracker Suite, Bugs Bunny and the Three Bears, The Edge, An Unfinished Life, The Care Bears Adventure in Wonderland
+  - Relevant: Paddington
+
+- Query: dinosaur park
+  - Precision@3: 0.3333
+  - Recall@3: ???
+  - Retrieved: Jurassic Park, Lost River, Carnosaur
+  - Relevant: Jurassic Park
+
+- Query: dinosaur park
+  - Precision@6: 0.1667
+  - Recall@6: ???
+  - Retrieved: Jurassic Park, Lost River, Carnosaur, The Crater Lake Monster, Ice Age: Dawn of the Dinosaurs, A Sound of Thunder
+  - Relevant: Jurassic Park
+
+- Query: car racing
+  - Precision@3: 0.6667
+  - Retrieved: Rush, Hot Wheels Highway 35 World Race, The Fast and the Furious
+  - Relevant: Furious Seven, The Fast and the Furious, Need for Speed, Cars, The Love Bug, Talladega Nights: The Ballad of Ricky Bobby, Rush
+
+- Query: car racing
+  - Precision@5: 0.6000
+  - Recall@5: ???
+  - Retrieved: Rush, Hot Wheels Highway 35 World Race, The Fast and the Furious, Need for Speed, Cannonball!
+  - Relevant: Talladega Nights: The Ballad of Ricky Bobby, Furious Seven, The Fast and the Furious, Need for Speed, The Love Bug, Cars, Rush
+
+- Query: car racing
+  - Precision@6: 0.5000
+  - Recall@6: ???
+  - Retrieved: Rush, Hot Wheels Highway 35 World Race, The Fast and the Furious, Need for Speed, Cannonball!, Redline
+  - Relevant: Rush, Cars, Need for Speed, Furious Seven, Talladega Nights: The Ballad of Ricky Bobby, The Fast and the Furious, The Love Bug
+
+- Query: car racing
+  - Precision@8: 0.3750
+  - Recall@8: ???
+  - Retrieved: Rush, Hot Wheels Highway 35 World Race, The Fast and the Furious, Need for Speed, Cannonball!, Redline, Fast and Furious, Michel Vaillant
+  - Relevant: Talladega Nights: The Ballad of Ricky Bobby, The Love Bug, Furious Seven, The Fast and the Furious, Cars, Need for Speed, Rush
+
+- Query: car racing
+  - Precision@9: 0.4444
+  - Recall@9: ???
+  - Retrieved: Rush, Hot Wheels Highway 35 World Race, The Fast and the Furious, Need for Speed, Cannonball!, Redline, Fast and Furious, Michel Vaillant, Cars
+  - Relevant: Rush, Need for Speed, Furious Seven, Cars, The Fast and the Furious, Talladega Nights: The Ballad of Ricky Bobby, The Love Bug
+
+- Query: car racing
+  - Precision@10: 0.4000
+  - Recall@10: 0.5714
+  - Retrieved: Rush, Hot Wheels Highway 35 World Race, The Fast and the Furious, Need for Speed, Cannonball!, Redline, Fast and Furious, Michel Vaillant, Cars, Thunder Alley
+  - Relevant: Furious Seven, Cars, Rush, The Love Bug, Need for Speed, Talladega Nights: The Ballad of Ricky Bobby, The Fast and the Furious
+
+- Query: car racing
+  - Precision@11: 0.4545
+  - Retrieved: Rush, Hot Wheels Highway 35 World Race, The Fast and the Furious, Need for Speed, Cannonball!, Redline, Fast and Furious, Michel Vaillant, Cars, Thunder Alley, The Love Bug
+  - Relevant: The Love Bug, Furious Seven, Need for Speed, Talladega Nights: The Ballad of Ricky Bobby, Rush, The Fast and the Furious, Cars
+
+eshim@eshimbp22 rag-search-engine % uv run cli/evaluation_cli.py --limit 10
+evaluation_cli > golden_dataset.json loaded
+evaluation_cli > movies.json loaded
+Loading weights: 100%|████████████████| 103/103 [00:00<00:00, 6813.66it/s, Materializing param=pooler.dense.weight]
+BertModel LOAD REPORT from: sentence-transformers/all-MiniLM-L6-v2
+Key                     | Status     |  |
+------------------------+------------+--+-
+embeddings.position_ids | UNEXPECTED |  |
+
+Notes:
+- UNEXPECTED    :can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+
+- Query: cute british bear marmalade
+  - Precision@3: 0.3333
+  - Recall@3: 1.0000
+  - Matched: (33.3%) Paddington
+  - Missed: (0.0%)
+  - Not Relevant: (66.7%) The Bear, The Duchess
+
+- Query: cute british bear marmalade
+  - Precision@6: 0.1667
+  - Recall@6: 1.0000
+  - Matched: (16.7%) Paddington
+  - Missed: (0.0%)
+  - Not Relevant: (83.3%) The Bear, Care Bears Nutcracker Suite, Care Bears Movie II: A New Generation, The Great Bear, The Duchess
+
+- Query: cute british bear marmalade
+  - Precision@10: 0.1000
+  - Recall@10: 1.0000
+  - Matched: (10.0%) Paddington
+  - Missed: (0.0%)
+  - Not Relevant: (90.0%) The Great Bear, Bugs Bunny and the Three Bears, The Duchess, The Bear, Care Bears Nutcracker Suite, An Unfinished Life, Care Bears Movie II: A New Generation, The Care Bears Adventure in Wonderland, The Edge
+
+- Query: dinosaur park
+  - Precision@3: 0.3333
+  - Recall@3: 1.0000
+  - Matched: (33.3%) Jurassic Park
+  - Missed: (0.0%)
+  - Not Relevant: (66.7%) Lost River, Carnosaur
+
+- Query: dinosaur park
+  - Precision@6: 0.1667
+  - Recall@6: 1.0000
+  - Matched: (16.7%) Jurassic Park
+  - Missed: (0.0%)
+  - Not Relevant: (83.3%) Ice Age: Dawn of the Dinosaurs, The Crater Lake Monster, Lost River, The Wizard, Carnosaur
+
+- Query: dinosaur park
+  - Precision@10: 0.1000
+  - Recall@10: 1.0000
+  - Matched: (10.0%) Jurassic Park
+  - Missed: (0.0%)
+  - Not Relevant: (90.0%) The Good Dinosaur, The Crater Lake Monster, The Wizard, A Sound of Thunder, Ice Age: Dawn of the Dinosaurs, A Claymation Christmas Celebration, Pee-wee's Big Adventure, Carnosaur, Lost River
+
+- Query: car racing
+  - Precision@3: 0.6667
+  - Recall@3: 0.2857
+  - Matched: (66.7%) Rush, The Fast and the Furious
+  - Missed: (71.4%) The Love Bug, Talladega Nights: The Ballad of Ricky Bobby, Furious Seven, Cars, Need for Speed
+  - Not Relevant: (33.3%) Hot Wheels Highway 35 World Race
+
+- Query: car racing
+  - Precision@9: 0.4444
+  - Recall@9: 0.5714
+  - Matched: (44.4%) The Fast and the Furious, Need for Speed, Rush, Cars
+  - Missed: (42.9%) Furious Seven, Talladega Nights: The Ballad of Ricky Bobby, The Love Bug
+  - Not Relevant: (55.6%) Cannonball!, Hot Wheels Highway 35 World Race, Redline, Michel Vaillant, Fast and Furious
+
+- Query: car racing
+  - Precision@5: 0.6000
+  - Recall@5: 0.4286
+  - Matched: (60.0%) The Fast and the Furious, Rush, Need for Speed
+  - Missed: (57.1%) The Love Bug, Furious Seven, Talladega Nights: The Ballad of Ricky Bobby, Cars
+  - Not Relevant: (40.0%) Hot Wheels Highway 35 World Race, Cannonball!
+
+- Query: car racing
+  - Precision@6: 0.5000
+  - Recall@6: 0.4286
+  - Matched: (50.0%) Need for Speed, The Fast and the Furious, Rush
+  - Missed: (57.1%) Talladega Nights: The Ballad of Ricky Bobby, The Love Bug, Cars, Furious Seven
+  - Not Relevant: (50.0%) Cannonball!, Redline, Hot Wheels Highway 35 World Race
+
+- Query: car racing
+  - Precision@8: 0.3750
+  - Recall@8: 0.4286
+  - Matched: (37.5%) The Fast and the Furious, Need for Speed, Rush
+  - Missed: (57.1%) Furious Seven, Cars, The Love Bug, Talladega Nights: The Ballad of Ricky Bobby
+  - Not Relevant: (62.5%) Redline, Hot Wheels Highway 35 World Race, Cannonball!, Michel Vaillant, Fast and Furious
+
+- Query: car racing
+  - Precision@9: 0.4444
+  - Recall@9: 0.5714
+  - Matched: (44.4%) Need for Speed, Rush, Cars, The Fast and the Furious
+  - Missed: (42.9%) Talladega Nights: The Ballad of Ricky Bobby, Furious Seven, The Love Bug
+  - Not Relevant: (55.6%) Redline, Cannonball!, Fast and Furious, Michel Vaillant, Hot Wheels Highway 35 World Race
+
+- Query: car racing
+  - Precision@10: 0.5000
+  - Recall@10: 0.7143
+  - Matched: (50.0%) Need for Speed, Cars, Rush, Talladega Nights: The Ballad of Ricky Bobby, The Fast and the Furious
+  - Missed: (28.6%) The Love Bug, Furious Seven
+  - Not Relevant: (50.0%) Cannonball!, Redline, Hot Wheels Highway 35 World Race, Michel Vaillant, Fast and Furious
+
+- Query: car racing
+  - Precision@11: 0.5455
+  - Recall@11: 0.8571
+  - Matched: (54.5%) Rush, The Fast and the Furious, Need for Speed, Cars, Talladega Nights: The Ballad of Ricky Bobby, The Love Bug
+  - Missed: (14.3%) Furious Seven
+  - Not Relevant: (45.5%) Redline, Michel Vaillant, Fast and Furious, Cannonball!, Hot Wheels Highway 35 World Race

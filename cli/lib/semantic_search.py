@@ -165,7 +165,9 @@ class ChunkedSemanticSearch(SemanticSearch):
                 chunk_text = chunk_text.strip()
                 # skip if nothing after stripping
                 if not chunk_text:
-                    print(f"skipped chunk: {chunk_idx} due to nothing after strip")
+                    print(
+                        f"build_chunk_embeddings > skipped chunk: {chunk_idx} due to nothing after strip"
+                    )
                     continue
                 chunks.append(chunk_text)
                 chunks_meta.append(chunk_meta)
@@ -194,18 +196,18 @@ class ChunkedSemanticSearch(SemanticSearch):
 
     def search_chunks(self, query: str, limit: int = 10):
         if not query:
-            raise ValueError("generate_embedding > text_input is empty")
+            raise ValueError("search_chunks > text_input is empty")
             return list()
         query.strip()
         if not query:
-            raise ValueError("generate_embedding > text_input empty after strip")
+            raise ValueError("search_chunks > text_input empty after strip")
             return list()
         embq = self.model.encode([query])[0]
         cidx = 0
         chunk_scores = list()
         movie_scores = dict()
-        print(f"chunk_metadata = {len(self.chunk_metadata)}")
-        print(f"chunk_embeddings = {len(self.chunk_embeddings)}")
+        # print(f"search_chunks > chunk_metadata = {len(self.chunk_metadata)}")
+        # print(f"search_chunks > chunk_embeddings = {len(self.chunk_embeddings)}")
         for chunk_emb in self.chunk_embeddings:
             # print(f"cidx = {cidx}")
             cossim = round(cosine_similarity(chunk_emb, embq), 3)
@@ -235,7 +237,7 @@ class ChunkedSemanticSearch(SemanticSearch):
             doc = self.document_map[doc_id]
             fin_dict["id"] = doc_id
             fin_dict["title"] = doc["title"]
-            fin_dict["description"] = doc["description"]
+            fin_dict["description"] = doc["description"][:100]
             fin_dict["score"] = cs_dict["score"]
             fin_dict["metadata"] = {}
             final_list.append(fin_dict)

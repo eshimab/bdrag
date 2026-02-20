@@ -133,7 +133,10 @@ class InvertedIndex:
 
     def get_bm25_idf(self, term_input: str) -> float:
         doc_count = len(self.docmap)
-        term_doc_count = len(self.index[self.make_term(term_input)])
+        term_made = self.make_term(term_input)
+        if term_made not in self.index:
+            return 0
+        term_doc_count = len(self.index[term_made])
         # doc_freq = len(self.get_document(term_input))
         bmidf = math.log(
             (doc_count - term_doc_count + 0.5) / (term_doc_count + 0.5) + 1
@@ -164,7 +167,7 @@ class InvertedIndex:
             raise FileNotFoundError(f"no file found for {file_path}")
 
     def load(self) -> None:
-        print("loading inverted index atts")
+        # print("semantic_search.load > loading inverted index atts")
         # index
         try:
             self.index = self.__load_path("index")

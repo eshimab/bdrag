@@ -45,57 +45,57 @@ class HybridSearch:
         self.idx.load()
         return self.idx.bm25_search(query, limit)
 
-    def rrf_search(self, query=str, k=60, limit=5):
+    def rrf_search(self, query=str, k_val=60, limit=5):
         # init embeddings
         # these should come pre sorted
         bms = self._bm25_search(query, limit * 500)
         css = self.semantic_search.search_chunks(query, limit * 500)
-        for idx, bmd in enumerate(bms):
-            bmd["rank"] = idx + 1
-            bms[idx] = bmd
-        for idx, csd in enumerate(css):
-            csd["rank"] = idx + 1
-            css[idx] = csd
-        # get dict maps by movie id
-        bm_map = {doc["id"]: doc for doc in bms}
-        cs_map = {doc["id"]: doc for doc in css}
-        # get ids
-        bm_ids = [bm_dict["id"] for bm_dict in bms]
-        cs_ids = [cs_dict["id"] for cs_dict in css]
-        id_set = set(bm_ids) | set(cs_ids)  # create union of sets
-        # print(f"rrf_search > bm_ids = {len(bm_ids)}, bm_id_set = {len(set(bm_ids))}")
-        # print(f"rrf_search > cs_ids = {len(cs_ids)}, cs_id_set = {len(set(cs_ids))}")
-        # print(f"rrf_search > id_set = {len(id_set)}")
-        # init loop
-        rr_list = list()
-        for doc_id in id_set:
-            # init
-            rr_dict = dict()
-            rr_dict["id"] = doc_id
-            rr_dict["title"] = self.semantic_search.document_map[doc_id]["title"]
-            rr_dict["description"] = self.semantic_search.document_map[doc_id][
-                "description"
+        # init
+        rrf_scores = {}  # Use this like the guide
+        # Loop 1: BM25
+        for rank, result in enumerate(bms, start=1):
+            doc_id = result["id"]
+            bm_score = 1 / (k_val + rank)
+            rrf_scores[doc_id] = {
+                "id": doc_id,
+                "rr_score": bm_score,
+                "bm_rank": rank,
+                "bm_score": bm_score,
+                "cs_rank": None,
+                "cs_score": 0,
+                "bm_raw": result["score"],
+            }
+        # Loop 2: Semantic
+        for rank, result in enumerate(css, start=1):
+            doc_id = result["id"]
+            cs_score = 1 / (k_val + rank)
+            if doc_id in rrf_scores:
+                rrf_scores[doc_id]["rr_score"] += cs_score
+            else:
+                rrf_scores[doc_id] = {
+                    "id": doc_id,
+                    "rr_score": cs_score,
+                    "bm_rank": None,
+                    "bm_score": 0,
+                    "bm_raw": 0,
+                }
+            rrf_scores[doc_id]["cs_rank"] = rank
+            rrf_scores[doc_id]["cs_score"] = cs_score
+            rrf_scores[doc_id]["cs_raw"] = result["score"]
+        # sort and limit
+        rr_sorted = sorted(
+            rrf_scores.values(), key=lambda rrf: rrf["rr_score"], reverse=True
+        )
+        # get metadata and compute rrf score
+        for ridx, doc_id in enumerate(rrf_scores, start=1):
+            rrf_scores[doc_id]["rr_rank"] = ridx
+            rrf_scores[doc_id]["title"] = self.semantic_search.document_map[doc_id][
+                "title"
             ]
-            rr_dict["score"] = 0
-            # calculate bm scores
-            if doc_id in bm_ids:
-                bm_dict = bm_map[doc_id]
-                rr_dict["bm_rank"] = bm_dict["rank"]
-                rr_dict["bm_score"] = rrf_score(bm_dict["rank"], k)
-                rr_dict["score"] += rr_dict["bm_score"]
-            # calculate cs scores
-            if doc_id in cs_ids:
-                cs_dict = cs_map[doc_id]
-                rr_dict["cs_rank"] = cs_dict["rank"]
-                rr_dict["cs_score"] = rrf_score(cs_dict["rank"], k)
-                rr_dict["score"] += rr_dict["cs_score"]
-            # add metadata
-            # rr_dict["score"] = round(rr_dict["score"], 4)
-            rr_dict["score"] = round(rr_dict["score"], 3)
-            # rr_dict["score"] = rr_dict["score"]
-            rr_list.append(rr_dict)
-        # sort
-        rr_sorted = sorted(rr_list, key=lambda rrd: rrd["score"], reverse=True)
+            rrf_scores[doc_id]["description"] = self.semantic_search.document_map[
+                doc_id
+            ]["description"]
+            # rrf_scores[doc_id]["rr_score"] = round(rrf_scores[doc_id]["rr_score"], 3)
         return rr_sorted[0:limit]
 
     def weighted_search(self, query, alpha, limit=5):

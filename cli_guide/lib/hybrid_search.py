@@ -170,15 +170,14 @@ def reciprocal_rank_fusion(
 
     rrf_results = []
     for doc_id, data in sorted_items:
-        result = format_search_result(
-            doc_id=doc_id,
-            title=data["title"],
-            document=data["document"],
-            score=data["rrf_score"],
-            rrf_score=data["rrf_score"],
-            bm25_rank=data["bm25_rank"],
-            semantic_rank=data["semantic_rank"],
-        )
+        result = {
+            "id": doc_id,
+            "title": data["title"],
+            "description": data["document"],
+            "score": data["rrf_score"],
+            "bm_rank": data["bm25_rank"],
+            "cs_rank": data["semantic_rank"],
+        }
         rrf_results.append(result)
 
     return rrf_results
